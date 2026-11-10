@@ -1,4 +1,4 @@
-# Contributing (minimal note)
+# Contributing
 
 Thank you for your interest in Video Segment Editor. This is a small personal project; replies may take a few days.
 

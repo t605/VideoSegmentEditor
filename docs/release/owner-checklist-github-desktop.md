@@ -52,7 +52,7 @@ Recommendation: A. Your choice: ______
 
 ## 6. Community files
 - [ ] `.github/ISSUE_TEMPLATE/bug_report.md` and `feature_request.md` are in the commit.
-- [ ] Decide whether to copy `docs/release/CONTRIBUTING-note.md` to the repository root as `CONTRIBUTING.md` (GitHub then links it automatically).
+- [x] The contributing note is now `.github/CONTRIBUTING.md` (GitHub links it automatically from the issue and pull request pages).
 - [ ] On GitHub: About (gear icon): paste the description and topics from `repo-description-and-topics.md`.
 
 ## 7. Make the Release
