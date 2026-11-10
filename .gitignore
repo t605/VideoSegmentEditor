@@ -1,0 +1,28 @@
+# Subagent workspace (ledger, briefs, reports) - scratch, not part of the program
+.superpowers/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Release output and private/runtime data
+*.zip
+dist/
+build/
+app.log
+settings.json
+
+# Original requirements and UI mockup: kept locally, not published (owner's decision)
+prompt.txt
+mock screen.png
+
+# Working rules and owner decisions: local only (owner's decision 2026-11-09)
+CLAUDE.md
+
+# Installer build output (build_installer.ps1 work folder, Setup exe)
+*.exe
+installer/Output/
+installer/work/
+installer_build/
