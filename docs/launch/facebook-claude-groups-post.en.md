@@ -1,6 +1,6 @@
 # Draft: post for Facebook groups about Claude / building tools with AI (English)
 
-DRAFT ONLY. Nothing has been posted. Before posting, replace [GITHUB RELEASE LINK] with the real link.
+DRAFT ONLY. Nothing has been posted. The link to https://github.com/t605/VideoSegmentEditor is already in the text. Post only after the repository is PUBLIC and the Release with the zip is published (open the link in a private window to check).
 This is the English version of `facebook-claude-groups-post.he.md` (same structure and content).
 
 ## Text to paste
@@ -20,7 +20,7 @@ Why I built it: I wanted exact cuts without learning a full video editor.
 
 [Screenshot 2: the finished state: the Done message and the new file]
 
-How to install: there are two ways. A Setup program (VideoSegmentEditor-Setup.exe) installs the program for the current user only, with no administrator rights and no Python. Setup checks whether FFmpeg and VLC are installed and, if they are missing, installs them by itself (through winget; it needs internet, it can take several minutes, and the Setup window may look frozen meanwhile). Or a zip file with a launcher that checks what is missing (Python, FFmpeg, VLC), shows everything on one screen and asks one question before it installs anything. Both files are not digitally signed, so Windows may show a blue "Windows protected your PC" window: click More info and then Run anyway (only if you downloaded the file from a source you trust).
+How to install: download VideoSegmentEditor.zip from the Releases section of the GitHub page, unzip it into a folder of your own and double-click VideoSegmentEditor.bat. The launcher checks what is missing (Python, FFmpeg, VLC), shows everything on one screen and asks ONE question before it installs anything (through winget; it needs internet and can take a few minutes). The files are not digitally signed, so Windows may show a blue "Windows protected your PC" window: click More info and then Run anyway (only if you downloaded the file from a source you trust). A Setup (.exe) installer exists too, but I have not tested it enough yet, so it is not published.
 
 Limits, honestly:
 - Windows only. You need internet if FFmpeg, VLC or Python are missing
@@ -28,11 +28,11 @@ Limits, honestly:
 - The output is always MP4 (H.264 + AAC). HDR is converted to SDR
 - Without VLC there is no preview, but you can type the times by hand
 - I measured speed on one laptop only: 1080p about 3.4 times faster than the video's length, 4K slower than the video's length
-- The window itself, real VLC playback and the Setup program were tested by hand on my own computer only. There are 444 automated tests (all pass, one is skipped)
+- The window itself, real VLC playback and the launcher's install steps were tested by hand on my own computer only (it already had Python, FFmpeg and VLC). There are 444 automated tests (all pass, one is skipped)
 
 How it was built: written with Claude Code, with automated tests and several review rounds. I set the rules (the original is read-only, always re-encode, verify before Done) and Claude wrote most of the code. I read the results, not every line.
 
-Please try it: [GITHUB RELEASE LINK]
+Please try it: https://github.com/t605/VideoSegmentEditor
 Tell me what broke, what was unclear, and which one feature you would add. Bug reports go in Issues on the GitHub page.
 
 ## Screenshots to attach (outside the pasted text)
@@ -52,4 +52,4 @@ Before posting: open each image and check the title bar, the folder path, the ta
 - Answer comments politely and honestly, and write "not tested" where that is true.
 - Do not share other people's private videos or screenshots.
 - No personal details (email, phone, local folder paths) in the text or in the images.
-- After posting: put the real link in place of [GITHUB RELEASE LINK] (edit the post).
+- After posting: click the link once, logged out, to check that it opens.

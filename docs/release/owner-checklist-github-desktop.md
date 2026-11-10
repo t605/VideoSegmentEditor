@@ -62,7 +62,7 @@ Recommendation: A. Your choice: ______
 - [ ] Test the zip: unzip into a new folder and run `VideoSegmentEditor.bat /check`.
 - [ ] GitHub: Releases > Draft a new release. Tag `v1.0`, target main, title "Video Segment Editor 1.0".
 - [ ] Paste the text of `release-notes-v1.0.md` (change the "tested only on the development PC" line if the rehearsal found more).
-- [ ] Attach `VideoSegmentEditor-Setup.exe` and `VideoSegmentEditor.zip` (zips and exes are git-ignored, so they go on the Release page only).
+- [ ] Attach `VideoSegmentEditor.zip` only (zips and exes are git-ignored, so they go on the Release page only). DECIDED 2026-11-10: the Setup exe is added later, after a clean-PC test.
 - [ ] The release notes already explain the blue "Windows protected your PC" window (More info, then Run anyway) because the files are unsigned; keep that paragraph.
 - [ ] Save as draft; publish the release after step 8.
 

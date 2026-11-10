@@ -1,10 +1,10 @@
 # Draft: LinkedIn post (English)
 
-DRAFT ONLY. Nothing has been posted. Replace [GITHUB RELEASE LINK] before posting.
+DRAFT ONLY. Nothing has been posted. The link to https://github.com/t605/VideoSegmentEditor is already in the text. Post only after the repository is PUBLIC and the Release with the zip is published (open the link in a private window to check).
 
 ## Text to paste
 
-I just published my first open-source tool, built with Claude Code: Video Segment Editor, a free Windows-only video segment cutter with a Setup installer.
+I just published my first open-source tool, built with Claude Code: Video Segment Editor, a free Windows-only video segment cutter.
 
 The problem: you have a long recording and want only a few parts of it as one clean video, without learning a full editor.
 
@@ -13,7 +13,7 @@ What it does:
 - Reorder them and create ONE MP4 with a single click
 - Cuts are exact (every piece is re-encoded), the original file is never touched, and the result is checked before the program says "Done"
 - English and Russian interface
-- Install with a Setup program (no Python, no administrator rights; it checks for FFmpeg and VLC and installs them itself if they are missing) or from a zip with a launcher
+- Install from a zip: a launcher checks for Python, FFmpeg and VLC, lists what is missing on one screen, asks one question and installs it (a Setup .exe exists but is not published until I have tested it more)
 
 What I learned building it with an AI coding tool:
 1. Write the rules first (original is read-only, never overwrite, verify the result). The tool followed them well.
@@ -22,7 +22,7 @@ What I learned building it with an AI coding tool:
 
 Honest limits: Windows only; a segment cutter, not a video editor; MP4 output only; speed measured on one laptop.
 
-Try it and tell me what breaks: [GITHUB RELEASE LINK]
+Try it and tell me what breaks: https://github.com/t605/VideoSegmentEditor
 
 ## Hashtag options (pick one set)
 
