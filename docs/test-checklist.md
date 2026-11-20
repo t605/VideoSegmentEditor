@@ -1,4 +1,4 @@
-# Manual test checklist - Video Segment Editor 1.0
+# Manual test checklist - Video Segment Editor 1.1
 
 Run this by hand on a real Windows PC with the real program (`VideoSegmentEditor.bat`), real VLC and real FFmpeg.
 The automated tests (`python -m unittest discover -s tests`) cover the logic; this list covers what a
@@ -193,11 +193,11 @@ Launcher (`VideoSegmentEditor.bat`). Developer switches for rehearsals: `VSE_DRY
 | N7 | `VideoSegmentEditor.bat /check` on the clean PC: lists the missing items and "a normal start would list this", installs nothing, creates no folder under `%LOCALAPPDATA%\VideoSegmentEditor` | | |
 | N8 | `build_release.ps1 -Dest <scratch folder>`: the byte check of the .bat still passes (ASCII, CRLF) | | |
 
-Setup program (`VideoSegmentEditor-Setup.exe`, built by `build_installer.ps1`). Rehearsed on the development PC only: silent install into a scratch folder, program started (window title shown, `app.log` line written), silent uninstall.
+Setup program (`VideoSegmentEditor-Setup.exe`, built by `build_installer.ps1`). Rehearsed on the development PC: silent install into a scratch folder, program started (window title shown, `app.log` line written), silent uninstall. A friend also ran the Setup on a second PC (reported 2026-11-13, see N24).
 
 | # | Check | Result | Date |
 |---|---|---|---|
-| N9 | Double-click Setup on a clean PC (no admin account needed): wizard shows licence, folder, tasks; installs to `%LOCALAPPDATA%\Programs\Video Segment Editor`; Start menu entry has the logo | | |
+| N9 | Double-click Setup on a clean PC (no admin account needed): wizard shows licence and tasks (NO folder page: nothing lets a person pick `C:\Program Files`); installs to `%LOCALAPPDATA%\Programs\Video Segment Editor`; Start menu entry has the logo | | |
 | N10 | FFmpeg and VLC missing, winget present: ONE page "Programs the editor needs" with sizes and the sentence that Setup installs them (no tick box, no question); Install: status text "Installing FFmpeg..." / "Installing VLC player...", no further question, then both are found by the program | | |
 | N11 | `Setup /NOINSTALLMISSING` (wizard, missing programs, winget present): the page says Setup will NOT install them; the program is installed, nothing downloaded; at start the program says what is missing | | |
 | N12 | winget missing: the page explains "App Installer" and by-hand steps, nothing is run, the program is installed | | |
@@ -211,3 +211,21 @@ Setup program (`VideoSegmentEditor-Setup.exe`, built by `build_installer.ps1`). 
 | N20 | Setup creates the Start-menu entries "Video Segment Editor" and "Video Segment Editor - Read me" (opens README.txt); the desktop-icon task is unticked by default and creates the icon when ticked | | |
 | N21 | VLC permission window (Setup and launcher): click No = VLC is not installed, the program starts without preview and says so; click Yes = VLC is found. The README text about the "Windows protected your PC" window and the VLC window matches what is really shown | | |
 | N22 | Launcher pause rule: all installed fine = black window closes by itself; answer N, no winget, or one install cancelled = window waits for a key; Python missing and not installed = waits and stops | | |
+| N24 | A friend ran `VideoSegmentEditor-Setup.exe` on a second PC (the build in `Finished tools`, SHA-256 `D26521139A6095F513235F24A50BE8C6EDA14D5B8C0FCD77B8C4A7FA54C94D4A`, assumed): Setup installed VLC as intended. Not recorded by the friend: FFmpeg, the wizard pages, SmartScreen, starting the program | VLC step OK (friend's report, no details); the rest not recorded | 2026-11-13 |
+
+## O. Version 1.1: typed times with VLC (tester's feedback, 2026-11-19)
+
+The automated tests (11 new ones in `tests/test_gui_wp3.py`) cover the logic and the layout; this part is by eye.
+The "Result" and "Date" columns are empty until someone has done the check.
+
+| # | Check | Result | Date |
+|---|---|---|---|
+| O1 | With VLC working and a video loaded: the boxes "Start" and "End" and the button "Add segment" are in the header row of the segment list, next to "Selected Segments"; the counter "n / 10" is at the right end of the same row | | |
+| O2 | Type `1:05` in Start and `1:30` in End, press Enter (and, in a second try, the button): a segment `00:01:05.000` to `00:01:30.000` is added; the boxes are emptied; the status line says "Segment n added" | | |
+| O3 | Type `65` and `70.25`: accepted (seconds). Type `9:99`: nothing is added, the text stays in the box, the status line explains. A time after the end of the video: the same | | |
+| O4 | Mix: mark one segment with the buttons and add one by typing; both are in the table in the order added; the limit of 10 counts both | | |
+| O5 | Hold the mouse over a box for half a second: a tooltip names the accepted time forms (English and Russian) | | |
+| O6 | Window at its smallest (900 x 760 at 100 %) and on a 1366 x 768 screen: the Create Video button and the status line are fully visible, nothing is cut (the layout tests do this by emulation, not on a real screen) | | |
+| O7 | Russian interface: the row fits at 900 px width, the hint line and the boxes are readable, nothing overlaps | | |
+| O8 | Without VLC (rename the VLC folder or start with `VSE_FORCE_NO_VLC=1`): the Mark buttons are hidden, the same boxes are the way to add a segment, the hint says "type the start and end times above the table" | | |
+| O9 | Tab order: Mark Start, Mark End, Start box, End box, Add segment, table, the list buttons, Create Video | | |

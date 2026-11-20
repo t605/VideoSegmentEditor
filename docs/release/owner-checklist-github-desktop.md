@@ -62,7 +62,8 @@ Recommendation: A. Your choice: ______
 - [ ] Test the zip: unzip into a new folder and run `VideoSegmentEditor.bat /check`.
 - [ ] GitHub: Releases > Draft a new release. Tag `v1.0`, target main, title "Video Segment Editor 1.0".
 - [ ] Paste the text of `release-notes-v1.0.md` (change the "tested only on the development PC" line if the rehearsal found more).
-- [ ] Attach `VideoSegmentEditor.zip` only (zips and exes are git-ignored, so they go on the Release page only). DECIDED 2026-11-10: the Setup exe is added later, after a clean-PC test.
+- [ ] Attach `VideoSegmentEditor-Setup.exe` and `VideoSegmentEditor.zip` (zips and exes are git-ignored, so they go on the Release page only). DECIDED 2026-11-13: a friend tested the Setup on a second PC (it installed VLC as intended), so the exe is released together with the zip. Release 1.0 first had the zip only: edit that Release, drag in both files (replace the old zip), paste the current `release-notes-v1.0.md`, Update release.
+- [ ] RELEASE 1.1 (2026-11-19, typed times): build both files with `build_release.ps1` and `build_installer.ps1` (done 2026-11-19, hashes in `release-notes-v1.1.md`), commit, push, then GitHub > Releases > Draft a new release: tag `1.1`, target main, title "Video Segment Editor 1.1", paste `release-notes-v1.1.md` (from "Video Segment Editor cuts..." down to "MIT."), drag in BOTH files from `Finished tools\VideoSegmentEditor` (a 12 MB file cannot be uploaded by Claude), Publish. Check the two SHA-256 values on the Release page against the notes. The 1.0 Release stays as the older version.
 - [ ] The release notes already explain the blue "Windows protected your PC" window (More info, then Run anyway) because the files are unsigned; keep that paragraph.
 - [ ] Save as draft; publish the release after step 8.
 

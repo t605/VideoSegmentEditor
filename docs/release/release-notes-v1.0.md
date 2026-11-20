@@ -15,12 +15,18 @@ Video Segment Editor cuts the parts you want out of a video and joins them into 
 - Without VLC the preview is off but typed times still work.
 
 ### How to install
-1. Download `VideoSegmentEditor.zip` from the Assets list below.
-2. Unzip it into a folder of your own and double-click `VideoSegmentEditor.bat`.
-3. The launcher checks Python, FFmpeg and VLC, lists what is missing on one screen, asks ONE question (Y/N) and installs everything with winget. This needs internet and can take a few minutes; Windows may show one permission window for VLC: click Yes.
-4. The files are unsigned, so Windows may show the blue "Windows protected your PC" window: click "More info", then "Run anyway" (only for a file you got from a source you trust).
+There are two ways. Both files are unsigned, so Windows may show the blue "Windows protected your PC" window: click "More info", then "Run anyway" (only for a file you got from a source you trust).
 
-A Setup program (`.exe`) is not part of this release. It was tested only on the author's PC, so it will be added to a later release after a test on a clean PC.
+**Way A: Setup program, no Python needed (easiest)**
+1. Download `VideoSegmentEditor-Setup.exe` from the Assets list below and double-click it.
+2. Setup installs the program for the current Windows user only (no administrator rights) into `%LOCALAPPDATA%\Programs\Video Segment Editor`. The folder is fixed: there is nothing to choose. It shows the licence and an optional desktop-icon tick box.
+3. If FFmpeg or VLC are missing, one page lists them, and Setup installs them with winget after copying the program, with no further question. This needs internet and can take several minutes, and the Setup window may look frozen. Windows may show one permission window for VLC: click Yes.
+4. Start "Video Segment Editor" from the Start menu.
+Silent install: `VideoSegmentEditor-Setup.exe /VERYSILENT` (add `/NOINSTALLMISSING` to skip FFmpeg and VLC).
+
+**Way B: zip and launcher**
+1. Download `VideoSegmentEditor.zip` and unzip it into a folder of your own.
+2. Double-click `VideoSegmentEditor.bat`. It checks Python, FFmpeg and VLC, lists what is missing on one screen, asks ONE question (Y/N) and installs everything with winget. This needs internet and can take a few minutes; click Yes in VLC's permission window.
 
 The full guide is `README.txt` inside the zip (install steps, every message, troubleshooting).
 
@@ -31,7 +37,7 @@ The full guide is `README.txt` inside the zip (install steps, every message, tro
 - Maximum 10 segments; the segment list is not saved between sessions.
 - Join accuracy: about 13 ms of sound drift per junction (about 120 ms after 10 segments), measured on generated test videos on one laptop and not repeated after the last fixes. Short sound gaps at junctions were not tested with real speech or music.
 - Speed was measured on one laptop only: 1080p about 3.4x faster than real time, 4K slower than real time.
-- The launcher's install steps were exercised by automated dry-run tests and by hand on the author's PC, which already has Python, FFmpeg and VLC. A clean PC without them was not tested by anyone else.
+- The install steps were exercised on the author's PC, which already has Python, FFmpeg and VLC (launcher: automated dry-run tests and by hand; Setup: silent install, start, uninstall). A friend ran the Setup on a second PC and it installed VLC as intended; the other steps there (FFmpeg, wizard pages, SmartScreen) were not recorded. The zip launcher on a clean PC without Python was not tested by anyone else.
 - Real VLC rendering, display scaling and the launcher paths were checked by hand only on the author's own PC (see `docs/test-checklist.md` for what was and was not run).
 
 ### Quality
@@ -39,6 +45,7 @@ The full guide is `README.txt` inside the zip (install steps, every message, tro
 - Built with Claude Code; rules and decisions by the author.
 
 ### Downloads
+- `VideoSegmentEditor-Setup.exe` (Setup program, no Python needed)
 - `VideoSegmentEditor.zip` (unzip, then run `VideoSegmentEditor.bat`)
 
 ### Licence

@@ -1,4 +1,4 @@
-﻿Video Segment Editor - version 1.0
+﻿Video Segment Editor - version 1.1
 ==================================
 
 CONTENTS
@@ -92,8 +92,9 @@ you were given one). No Python is needed.
      source you trust.
   2. Setup installs the program for your Windows user only (no
      administrator rights needed), into
-     %LOCALAPPDATA%\Programs\Video Segment Editor. It shows the licence, the
-     folder, and one optional tick box for a desktop icon (empty by default).
+     %LOCALAPPDATA%\Programs\Video Segment Editor (this folder is fixed:
+     there is nothing to choose). It shows the licence and one optional tick
+     box for a desktop icon (empty by default).
      In the Start menu it creates two entries: "Video Segment Editor" and
      "Video Segment Editor - Read me" (this guide).
   3. Setup checks whether FFmpeg and VLC are installed. If one or both are
@@ -238,13 +239,16 @@ FIRST RUN - WHAT EACH SCREEN SHOWS
   area where the video will play. The line under the header says
   "No video loaded." The status line at the bottom says "Load a video to
   begin." The table "Selected Segments" shows "Marked segments appear here."
+  Above the table, next to its title, are two small boxes "Start" and "End"
+  and the button "Add segment": you can type a segment instead of marking it
+  (step 4 below).
   The button "Create Video" at the bottom is greyed out.
   If FFmpeg is not found, the status line says "FFmpeg is not installed."
   and a window "FFmpeg is missing" shows what to do (section 6).
   If VLC is not found, the video area shows "VLC is not installed, so the
-  video preview is switched off." with a download link, and a small form
-  with two time boxes and the button "Add segment" appears instead of the
-  Mark buttons (see the end of this section).
+  video preview is switched off." with a download link, and the Mark
+  buttons are hidden: you add segments with the time boxes above the table
+  (see the end of this section).
   Screen 3, after "Load Video" and choosing a file: the status line says
   "Reading <file name> ..." for a moment, then "Video loaded." The line
   above the video shows the file name, its length and its picture size (for
@@ -288,6 +292,13 @@ THE STEPS IN DETAIL
    of the video); Mark End without Mark Start is refused ("Press Mark Start
    first, then Mark End.").
    Segments may overlap, and you may use the same footage twice.
+   Instead of marking, you can TYPE a segment: write the start time in the
+   box "Start" and the end time in the box "End" (above the table, next to
+   "Selected Segments") and press "Add segment" or the Enter key. Write
+   hours:minutes:seconds, for example 00:01:05.250, or a short form: 1:05 is
+   1 minute 5 seconds, 65 is 65 seconds. The same rules and messages apply
+   as for the Mark buttons. If a time is not understood, nothing is added and
+   what you typed stays in the box. You can mix both ways in one list.
 5. Repeat for the next segments. The counter shows how many you have, for
    example "3 / 10". The maximum is 10 segments. When the table holds 10,
    the line above the Mark buttons says "Limit of 10 segments reached.
@@ -350,8 +361,9 @@ saved in settings.json in %LOCALAPPDATA%\VideoSegmentEditor and used the
 next time. Times are always written the same way (00:01:05.250).
 
 Without VLC the video area shows a message with the VLC download link, the
-playback controls are switched off, and a small form appears in place of
-Mark Start / Mark End: type the start and end times and press "Add segment".
+playback controls are switched off, and the Mark Start / Mark End buttons
+are hidden: type the start and end times in the boxes above the table and
+press "Add segment".
 If VLC fails three times in a row while you work, the program switches to the
 same typing mode and tells you so; your list is kept.
 
@@ -515,7 +527,7 @@ There are two ways to cut a video:
     frame you chose, and picture and sound stay in sync within the limits
     given in section 9.
 
-Version 1.0 ALWAYS makes exact cuts, because an exact cut matters more than
+Version 1.1 ALWAYS makes exact cuts, because an exact cut matters more than
 speed. There is no switch for the fast cut. (The segments are joined at the
 end by a lossless copy: that is safe because all segments are created in
 exactly the same way. The joins are not perfect; section 9 gives the
@@ -728,7 +740,7 @@ after 7 days."
 The new video is much bigger than the selected part of the original
   - The quality setting (CRF 18) asks for high quality. A low-bitrate
     original (for example an old phone clip) can GROW (section 9). There is
-    no switch for a smaller file in version 1.0.
+    no switch for a smaller file in version 1.1.
 
 The picture or sound of the new video looks or sounds different
   - Section 5 lists what is converted (HDR, 10-bit, interlaced, odd sizes)
@@ -995,9 +1007,10 @@ Notes:
     (section 6). The Setup program takes care of both by itself.
   - The EXE has no console; its log is %LOCALAPPDATA%\VideoSegmentEditor\app.log
     as before.
-  - The Setup and the EXE were tested on the development computer only
-    (silent install, start, uninstall). Test them on a clean computer, with
-    and without FFmpeg, VLC and winget, before giving them to anyone.
+  - The Setup and the EXE were tested on the development computer (silent
+    install, start, uninstall) and by one other person on a second computer,
+    where the Setup installed VLC as intended. Test them on a clean computer,
+    with and without FFmpeg, VLC and winget, before giving them to many people.
 
 FILES IN THIS PACKAGE
 The package has 14 files:

@@ -7,7 +7,8 @@
 ;
 ; What the Setup does:
 ;   - installs the program for the CURRENT USER only (no administrator rights needed)
-;     into %LOCALAPPDATA%\Programs\Video Segment Editor, with Start menu entry (and optional desktop icon)
+;     into %LOCALAPPDATA%\Programs\Video Segment Editor (fixed: no folder page), with Start menu entry
+;     (and optional desktop icon)
 ;   - ONE extra screen lists FFmpeg and VLC when they are missing, with approximate sizes. It has NO
 ;     tick box and asks no question: it states that after copying the program, Setup installs them
 ;     with winget, without further questions. (VLC is installed for all users by its own installer:
@@ -36,7 +37,12 @@ AppName=Video Segment Editor
 AppVersion={#AppVer}
 AppVerName=Video Segment Editor {#AppVer}
 AppPublisher=Michael Yeruhimovich
-DefaultDirName={autopf}\Video Segment Editor
+; The install folder is FIXED and there is no folder page (owner's decision 2026-11-10: installation as simple
+; as possible). A first build let a person type C:\Program Files (x86) there; this Setup runs without
+; administrator rights, so that failed with "Error 5: Access is denied" at "Creating directories".
+; {localappdata}\Programs is what {autopf} resolved to in this per-user mode, so nothing changes for users.
+DefaultDirName={localappdata}\Programs\Video Segment Editor
+DisableDirPage=yes
 DefaultGroupName=Video Segment Editor
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest

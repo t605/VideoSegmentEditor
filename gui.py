@@ -12,7 +12,8 @@ Widget attributes that Tasks 6 and 7 build on (all created in App._build_*):
                    btn_up, btn_down, btn_edit, btn_delete, btn_clear, lbl_total
   Bottom area:     btn_create, progress, btn_cancel_job (visible only while a video is being
                    created), lbl_operation, lbl_status, txt_output
-Manual entry:      manual_frame (shown instead of the Mark buttons when there is no player),
+Manual entry:      manual_frame (always shown, in the header of the segment list; the Mark buttons are
+                   hidden when there is no player),
                    ent_start, ent_end, btn_add_segment
 Other state:       self.info (VideoInfo or None), self.player (VlcPlayer or None),
                    self.segments (SegmentList), self.marker (Marker),
@@ -567,6 +568,8 @@ class App(tk.Tk):
               bordercolor=[("focus", LINK), ("disabled", BORDER)],
               lightcolor=[("focus", LINK), ("disabled", BORDER)],
               darkcolor=[("focus", LINK), ("disabled", BORDER)])
+        s.configure("Add.TButton", padding=pad(10, 2))    # "Add segment" beside the time boxes in the
+        s.map("Add.TButton", **button_map)                # list header: as low as the boxes (1.1)
         s.configure("Stop.TButton", padding=pad(10, 1))   # beside the progress bar: low, so
         # the window needs no more height while a video is being created
         s.map("Stop.TButton", **button_map)
@@ -712,25 +715,7 @@ class App(tk.Tk):
         self.lbl_mark_status = ttk.Label(row, text="", style="Dim.TLabel",  # use set_text
                                           wraplength=px(800, sc), justify="left")
         self.lbl_mark_status.grid(row=1, column=0, columnspan=2, sticky="w", pady=(px(4, sc), 0))
-        # No-VLC route: two time boxes + "Add segment" replace the Mark buttons.
-        self.manual_frame = ttk.Frame(row)
-        self.manual_frame.grid(row=0, column=0, columnspan=2, sticky="w")
-        self.lbl_manual_start = ttk.Label(self.manual_frame)
-        self.set_text(self.lbl_manual_start, "col.start")
-        self.ent_start = ttk.Entry(self.manual_frame, width=14, font=FONT_MONO)
-        self.lbl_manual_end = ttk.Label(self.manual_frame)
-        self.set_text(self.lbl_manual_end, "col.end")
-        self.ent_end = ttk.Entry(self.manual_frame, width=14, font=FONT_MONO)
-        self.btn_add_segment = ttk.Button(self.manual_frame, command=self.on_add_manual)
-        self.set_text(self.btn_add_segment, "btn.add_segment")
-        self.lbl_manual_start.grid(row=0, column=0, padx=(0, px(8, sc)))
-        self.ent_start.grid(row=0, column=1, padx=(0, px(16, sc)))
-        self.lbl_manual_end.grid(row=0, column=2, padx=(0, px(8, sc)))
-        self.ent_end.grid(row=0, column=3, padx=(0, px(16, sc)))
-        self.btn_add_segment.grid(row=0, column=4)
-        for ent in (self.ent_start, self.ent_end):
-            ent.bind("<Return>", lambda _e: self.on_add_manual())
-        self.manual_frame.grid_remove()
+        # The typed Start / End boxes live in the header of the segment list, see _build_table.
 
     def _build_table(self) -> None:
         sc = self.ui_scale
@@ -744,8 +729,32 @@ class App(tk.Tk):
         self.lbl_segments = ttk.Label(head, style="Heading.TLabel")
         self.set_text(self.lbl_segments, "label.selected_segments")
         self.lbl_segments.grid(row=0, column=0, sticky="w")
+        # Typed times (1.1): two time boxes + "Add segment", ALWAYS shown, in the header of the list they
+        # add to (before 1.1 they appeared only without VLC, so with VLC a time could not be typed).
+        # They share this row, so the window needs no extra height. Without VLC the Mark buttons are
+        # hidden and these boxes are the way to add a segment, see _apply_mode.
+        self.manual_frame = ttk.Frame(head)
+        self.manual_frame.grid(row=0, column=1, sticky="e", padx=(px(12, sc), px(16, sc)))
+        self.lbl_manual_start = ttk.Label(self.manual_frame)
+        self.set_text(self.lbl_manual_start, "col.start")
+        self.ent_start = ttk.Entry(self.manual_frame, width=14, font=FONT_MONO)
+        self.lbl_manual_end = ttk.Label(self.manual_frame)
+        self.set_text(self.lbl_manual_end, "col.end")
+        self.ent_end = ttk.Entry(self.manual_frame, width=14, font=FONT_MONO)
+        self.btn_add_segment = ttk.Button(self.manual_frame, style="Add.TButton",
+                                          command=self.on_add_manual)
+        self.set_text(self.btn_add_segment, "btn.add_segment")
+        self.lbl_manual_start.grid(row=0, column=0, padx=(0, px(6, sc)))
+        self.ent_start.grid(row=0, column=1, padx=(0, px(12, sc)))
+        self.lbl_manual_end.grid(row=0, column=2, padx=(0, px(6, sc)))
+        self.ent_end.grid(row=0, column=3, padx=(0, px(12, sc)))
+        self.btn_add_segment.grid(row=0, column=4)
+        for ent in (self.ent_start, self.ent_end):
+            ent.bind("<Return>", lambda _e: self.on_add_manual())
+        self.tip_start = Tooltip(self.ent_start, "dlg.edit_hint")   # the accepted time forms
+        self.tip_end = Tooltip(self.ent_end, "dlg.edit_hint")
         self.lbl_counter = ttk.Label(head, text=f"0 / {MAX_SEGMENTS}", style="Dim.TLabel")
-        self.lbl_counter.grid(row=0, column=1, sticky="e")
+        self.lbl_counter.grid(row=0, column=2, sticky="e")
 
         self.tree = ttk.Treeview(box, columns=("n", "start", "end", "duration"),
                                  show="headings", selectmode="browse", height=3)
@@ -899,15 +908,14 @@ class App(tk.Tk):
         return self._loading or self._create_active()
 
     def _apply_mode(self) -> None:
-        """Show the Mark buttons (player) or the manual time boxes (no player)."""
+        """The typed time boxes are always shown; the Mark buttons only when there is a player."""
         if self.manual_mode:
             self.btn_mark_start.grid_remove()
             self.btn_mark_end.grid_remove()
-            self.manual_frame.grid()
         else:
-            self.manual_frame.grid_remove()
             self.btn_mark_start.grid()
             self.btn_mark_end.grid()
+        self.manual_frame.grid()
         self._refresh_mark_labels()
 
     def _refresh_mark_labels(self) -> None:

@@ -600,7 +600,8 @@ class SmallItemTests(Wp3Base):
         app._refresh_mark_labels()
         app.update()
         expected = [app.btn_lang, app.btn_load, app.btn_play, app.btn_pause, app.btn_stop,
-                    app.seek_scale, app.vol_scale, app.btn_mark_start, app.btn_mark_end, app.tree,
+                    app.seek_scale, app.vol_scale, app.btn_mark_start, app.btn_mark_end,
+                    app.ent_start, app.ent_end, app.btn_add_segment, app.tree,
                     app.btn_up, app.btn_down, app.btn_edit, app.btn_delete, app.btn_clear,
                     app.btn_create]
         order, w = [], app.btn_lang
@@ -790,6 +791,128 @@ class ThemedDialogTests(Wp3Base):
         source = (PROJECT / "gui.py").read_text(encoding="utf-8")
         self.assertNotIn("messagebox", source)
         self.assertEqual(source.count("ThemedDialog("), 3)    # class def + the two seam methods
+
+
+class TypedTimesWithPreviewTests(Wp3Base):
+    """1.1: the typed Start/End boxes are shown even when VLC works. A tester could not type a time:
+    the boxes used to appear only when there was no preview."""
+    vlc_like = True
+
+    def test_typed_boxes_and_mark_buttons_are_both_shown_and_enabled(self):
+        app = self.make_app()
+        self.load(app)
+        app.update()
+        self.assertFalse(app.manual_mode)
+        for w in (app.btn_mark_start, app.btn_mark_end, app.ent_start, app.ent_end,
+                  app.btn_add_segment):
+            self.assertTrue(w.winfo_ismapped(), str(w))
+            self.assertTrue(w.instate(["!disabled"]), str(w))
+
+    def test_typed_boxes_sit_below_the_mark_buttons_and_the_hint(self):
+        app = self.make_app()
+        self.load(app)
+        app.update()
+        self.assertTrue(app.lbl_mark_status.winfo_ismapped())
+        self.assertGreater(app.ent_start.winfo_rooty(), app.btn_mark_start.winfo_rooty())
+        self.assertGreater(app.ent_start.winfo_rooty(), app.lbl_mark_status.winfo_rooty())
+        self.assertLess(app.btn_add_segment.winfo_rooty(), app.tree.winfo_rooty())
+
+    def test_a_typed_segment_is_added_with_a_preview(self):
+        app = self.make_app()
+        self.load(app, seconds=120)
+        app.ent_start.insert(0, "1:05")
+        app.ent_end.insert(0, "00:01:30.500")
+        app.on_add_manual()
+        self.assertEqual([(s.start_ms, s.end_ms) for s in app.segments.items], [(65000, 90500)])
+        self.assertEqual(app.ent_start.get(), "")
+        self.assertEqual(app.ent_end.get(), "")
+        self.assertEqual(app._texts[app.lbl_status][0], "mark.added")
+
+    def test_seconds_only_and_enter_key_work(self):
+        app = self.make_app()
+        self.load(app, seconds=120)
+        app.ent_start.insert(0, "65")
+        app.ent_end.insert(0, "70.25")
+        app.ent_end.focus_force()
+        app.update()
+        app.ent_end.event_generate("<Return>")
+        app.update()
+        self.assertEqual([(s.start_ms, s.end_ms) for s in app.segments.items], [(65000, 70250)])
+
+    def test_a_bad_typed_time_keeps_the_text_and_shows_a_message(self):
+        app = self.make_app()
+        self.load(app)
+        app.ent_start.insert(0, "9:99")
+        app.ent_end.insert(0, "1:00")
+        app.on_add_manual()
+        self.assertEqual(len(app.segments), 0)
+        self.assertEqual(app.ent_start.get(), "9:99")        # the input is kept, not lost
+        self.assertEqual(app._status_level, "warn")
+
+    def test_typed_and_marked_segments_mix_and_share_the_limit(self):
+        app = self.make_app()
+        self.load(app)
+        app.marker.mark_start(1000, app.segments)
+        app._segment_added(app.marker.mark_end(2000, app.segments))
+        app.ent_start.insert(0, "0:10")
+        app.ent_end.insert(0, "0:12")
+        app.on_add_manual()
+        self.assertEqual(len(app.segments), 2)
+        for i in range(gui.MAX_SEGMENTS - 2):
+            app.segments.add_text(f"0:{20 + i}", f"0:{20 + i}.5")
+        app.ent_start.insert(0, "0:55")
+        app.ent_end.insert(0, "0:56")
+        app.on_add_manual()
+        app.update()                                   # the message box is scheduled with after(0)
+        self.assertEqual(len(app.segments), gui.MAX_SEGMENTS)
+        self.assertTrue(any(str(gui.MAX_SEGMENTS) in str(d) for d in self.dialogs), self.dialogs)
+
+    def test_typed_boxes_are_locked_while_a_video_is_created(self):
+        app = self.make_app()
+        self.load(app)
+        app._creating = True
+        app._update_controls()
+        for w in (app.ent_start, app.ent_end, app.btn_add_segment):
+            self.assertFalse(w.instate(["!disabled"]), str(w))
+        app._creating = False
+
+    def test_the_hint_names_both_ways_in_english_and_russian(self):
+        set_language("en")
+        for word in ("Mark Start", "type the times", "above the table", "1:05"):
+            self.assertIn(word, t("mark.hint"))
+        set_language("ru")
+        for word in ("«Отметить начало»", "введите время", "над таблицей", "1:05"):
+            self.assertIn(word, t("mark.hint"))
+        set_language("en")
+
+    def test_the_time_forms_are_explained_in_a_tooltip_on_both_boxes(self):
+        app = self.make_app()
+        self.assertEqual(app.tip_start.text(), t("dlg.edit_hint"))
+        self.assertEqual(app.tip_end.text(), t("dlg.edit_hint"))
+        self.assertIn("1:05", t("dlg.edit_hint"))
+
+    def test_the_boxes_share_the_list_header_row_and_add_no_height(self):
+        app = self.make_app()
+        self.load(app)
+        app.update()
+        self.assertLess(abs(app.manual_frame.winfo_rooty() - app.lbl_segments.winfo_rooty()), 20)
+        self.assertLess(app.lbl_segments.winfo_rootx(), app.ent_start.winfo_rootx())
+        self.assertLess(app.btn_add_segment.winfo_rootx(), app.lbl_counter.winfo_rootx())
+
+
+class TypedTimesWithoutPreviewTests(Wp3Base):
+    """Without VLC the Mark buttons stay hidden and the typed boxes are the only way (unchanged)."""
+
+    def test_only_the_typed_boxes_are_shown_without_vlc(self):
+        app = self.make_app()
+        self.load(app)
+        app.update()
+        self.assertTrue(app.manual_mode)
+        self.assertFalse(app.btn_mark_start.winfo_ismapped())
+        self.assertFalse(app.btn_mark_end.winfo_ismapped())
+        for w in (app.ent_start, app.ent_end, app.btn_add_segment):
+            self.assertTrue(w.winfo_ismapped(), str(w))
+        self.assertEqual(app.lbl_mark_status.cget("text"), t("mark.manual_hint"))
 
 
 if __name__ == "__main__":

@@ -49,7 +49,8 @@ and works without the preview player (VLC) by letting you type the times.
 ## Features
 
 - Embedded playback (VLC) with play, pause, stop, seek bar and volume (tooltips on the symbol buttons).
-- Mark Start / Mark End, or type times by hand (`1:05`, `65` or `00:01:05.250`). Times are shown as
+- Mark Start / Mark End, or type the start and end times in the two boxes above the table (`1:05`, `65` or
+  `00:01:05.250`; always available, with or without VLC). Times are shown as
   hours:minutes:seconds, e.g. `00:01:05.250`.
 - Up to 10 segments; edit, delete, clear, move up/down; total length shown.
 - Every run re-encodes (H.264, CRF 18, AAC, MP4, faststart, a keyframe about every 2 s), so each piece starts at
@@ -110,7 +111,8 @@ only, with no Python needed and no administrator rights, into `%LOCALAPPDATA%\Pr
 
 1. Double-click the file. Windows may show the blue "Windows protected your PC" window (the file is unsigned):
    **More info**, then **Run anyway** (only for a file from a source you trust).
-2. Accept the licence, keep or change the folder, optionally tick the desktop icon (empty by default).
+2. Accept the licence and optionally tick the desktop icon (empty by default). The folder is fixed
+   (`%LOCALAPPDATA%\Programs\Video Segment Editor`): there is nothing to choose.
 3. Setup checks for FFmpeg and VLC. If they are missing, one page, "Programs the editor needs", lists them with
    their sizes and says that Setup installs them for you (no tick box, no question: click Next, then Install). After
    copying the program Setup installs them with `winget`. This step can take several minutes and the Setup window may
@@ -120,8 +122,9 @@ only, with no Python needed and no administrator rights, into `%LOCALAPPDATA%\Pr
 
 Silent install: `VideoSegmentEditor-Setup.exe /VERYSILENT` installs the program and, by default, a missing FFmpeg and
 VLC too; add `/NOINSTALLMISSING` to install the program only (`/INSTALLMISSING=1` is still accepted and does nothing;
-someone must still click **Yes** in VLC's permission window). Setup was tested
-on the development PC only. See [Build the Setup program](#build-the-setup-program-exe).
+someone must still click **Yes** in VLC's permission window). Setup was tested on the development PC, and one other
+person ran it on a second PC, where it installed VLC as intended (the other steps there were not recorded).
+See [Build the Setup program](#build-the-setup-program-exe).
 
 ### Updating and removing
 
@@ -145,6 +148,10 @@ on the development PC only. See [Build the Setup program](#build-the-setup-progr
 3. At the point where a segment should begin press **Mark Start** (the button turns green and shows the time).
 4. At the point where it should end press **Mark End**. The segment appears in the table "Selected Segments" and the
    counter shows e.g. `3 / 10`. Mark End without Mark Start gives "Press Mark Start first, then Mark End.".
+   **Or type the times instead of marking**: write the start in the **Start** box and the end in the **End** box (above
+   the table, next to "Selected Segments") and press **Add segment** or Enter. Short forms are accepted (see below). The
+   same rules and messages apply; both ways can be mixed in one list. (Version 1.1; before it the boxes existed only
+   when VLC was missing.)
 5. Repeat. At 10 segments the program says "Limit of 10 segments reached. Delete one to add another."
 6. Fix the list with **Move Up / Move Down** (the new video follows the table order), **Edit** (type exact times;
    Enter or a double-click on a row also opens it), **Delete** (or the Delete key) and **Clear All** (asks first).
@@ -156,8 +163,8 @@ on the development PC only. See [Build the Setup program](#build-the-setup-progr
 9. The status line shows **Done.** and below it **Saved to: ...** with the full path of the new file.
 
 The language button at the top right (RU / EN) switches the whole interface at once, without losing the video or the
-segments. Without VLC the video area says "VLC is not installed, so the video preview is switched off." and a small
-form lets you type the start and end times and press **Add segment**.
+segments. Without VLC the video area says "VLC is not installed, so the video preview is switched off.", the Mark
+buttons are hidden and the Start / End boxes above the table are the way to add a segment.
 
 ## Supported and converted formats
 
@@ -285,7 +292,7 @@ missing VLC.
 python -m unittest discover -s tests
 ```
 
-444 tests (1 skipped without a special clip). The pipeline tests use real FFmpeg and FFprobe and are skipped with a
+455 tests (1 skipped without a special clip). The pipeline tests use real FFmpeg and FFprobe and are skipped with a
 message when they are missing; the GUI tests drive the real window headlessly and need Tk. `docs/test-checklist.md`
 lists the manual checks and what nobody has verified yet (real VLC mark at the end, real 125/150% display, real HDR
 footage, Windows Media Player playback, Russian wording). A text change must keep the English and Russian

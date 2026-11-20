@@ -146,10 +146,11 @@ STRINGS: dict[str, dict[str, str]] = {
         "err.no_start": "Press Mark Start first, then Mark End.",
         # ---- marking, table, dialogs (Task 6)
         "btn.mark_start_set": "Mark Start\n{time}",
-        "mark.hint": "Move to where the segment should begin, then press Mark Start.",
+        "mark.hint": ("Move to where the segment should begin and press Mark Start, "
+                      "or type the times above the table (for example 1:05)."),
         "mark.pending": "Start marked at {time}. Move to the end point and press Mark End.",
         "mark.added": "Segment {n} added: {start} - {end}",
-        "mark.manual_hint": ("No video preview: type the start and end times and press Add segment. "
+        "mark.manual_hint": ("No video preview: type the start and end times above the table and press Add segment. "
                              "Use hours:minutes:seconds, for example 00:01:05.250. Short forms: 1:05 = 1 minute 5 seconds, 65 = 65 seconds."),
         "btn.add_segment": "Add segment",
         "btn.ok": "OK",
@@ -328,11 +329,12 @@ STRINGS: dict[str, dict[str, str]] = {
         "err.no_start": "Сначала нажмите «Отметить начало», затем «Отметить конец».",
         # ---- marking, table, dialogs (Task 6)
         "btn.mark_start_set": "Отметить начало\n{time}",
-        "mark.hint": "Перейдите к месту начала фрагмента и нажмите «Отметить начало».",
+        "mark.hint": ("Перейдите к началу фрагмента и нажмите «Отметить начало» "
+                      "или введите время над таблицей (например, 1:05)."),
         "mark.pending": ("Начало отмечено: {time}. Перейдите к месту окончания фрагмента и нажмите "
                          "«Отметить конец»."),
         "mark.added": "Фрагмент {n} добавлен: {start} - {end}",
-        "mark.manual_hint": ("Предпросмотр недоступен: введите время начала и конца и нажмите "
+        "mark.manual_hint": ("Предпросмотр недоступен: введите время начала и конца над таблицей и нажмите "
                              "«Добавить фрагмент». Введите часы:минуты:секунды, например 00:01:05.250. Короткие формы: 1:05 = 1 минута 5 секунд, 65 = 65 секунд."),
         "btn.add_segment": "Добавить фрагмент",
         "btn.ok": "ОК",

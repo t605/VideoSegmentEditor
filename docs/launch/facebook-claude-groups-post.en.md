@@ -20,7 +20,7 @@ Why I built it: I wanted exact cuts without learning a full video editor.
 
 [Screenshot 2: the finished state: the Done message and the new file]
 
-How to install: download VideoSegmentEditor.zip from the Releases section of the GitHub page, unzip it into a folder of your own and double-click VideoSegmentEditor.bat. The launcher checks what is missing (Python, FFmpeg, VLC), shows everything on one screen and asks ONE question before it installs anything (through winget; it needs internet and can take a few minutes). The files are not digitally signed, so Windows may show a blue "Windows protected your PC" window: click More info and then Run anyway (only if you downloaded the file from a source you trust). A Setup (.exe) installer exists too, but I have not tested it enough yet, so it is not published.
+How to install: open the Releases section of the GitHub page. The easy way: download VideoSegmentEditor-Setup.exe and double-click it. It installs the program for your Windows user only (no administrator rights, no Python) and, if FFmpeg or VLC are missing, installs them by itself (through winget; it needs internet, it can take several minutes, and the Setup window may look frozen meanwhile). Or download VideoSegmentEditor.zip, unzip it into a folder of your own and double-click VideoSegmentEditor.bat: the launcher checks what is missing (Python, FFmpeg, VLC), shows everything on one screen and asks ONE question before it installs anything. Both files are not digitally signed, so Windows may show a blue "Windows protected your PC" window: click More info and then Run anyway (only if you downloaded the file from a source you trust).
 
 Limits, honestly:
 - Windows only. You need internet if FFmpeg, VLC or Python are missing
@@ -28,7 +28,7 @@ Limits, honestly:
 - The output is always MP4 (H.264 + AAC). HDR is converted to SDR
 - Without VLC there is no preview, but you can type the times by hand
 - I measured speed on one laptop only: 1080p about 3.4 times faster than the video's length, 4K slower than the video's length
-- The window itself, real VLC playback and the launcher's install steps were tested by hand on my own computer only (it already had Python, FFmpeg and VLC). There are 444 automated tests (all pass, one is skipped)
+- The window itself, real VLC playback and the install steps were tested by hand on my own computer, which already had Python, FFmpeg and VLC. One friend also ran the Setup on another computer, and it installed VLC as intended. There are 455 automated tests (all pass, one is skipped)
 
 How it was built: written with Claude Code, with automated tests and several review rounds. I set the rules (the original is read-only, always re-encode, verify before Done) and Claude wrote most of the code. I read the results, not every line.
 

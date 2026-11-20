@@ -21,6 +21,9 @@ mock screen.png
 # Working rules and owner decisions: local only (owner's decision 2026-11-09)
 CLAUDE.md
 
+# Tester feedback (voice notes, transcripts): private, local only (owner's decision 2026-11-14)
+user_feedback/
+
 # Installer build output (build_installer.ps1 work folder, Setup exe)
 *.exe
 installer/Output/

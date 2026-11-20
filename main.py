@@ -6,7 +6,7 @@ import traceback
 from datetime import datetime
 from pathlib import Path
 
-APP_VER = "1.0"
+APP_VER = "1.1"
 
 
 LOG_MAX_BYTES = 1024 * 1024    # app.log is renamed to app.log.1 above this size
